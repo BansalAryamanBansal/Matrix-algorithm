@@ -1,0 +1,325 @@
+from fractions import Fraction as F
+def enter():
+    """Input Matrix."""
+    mat=[]
+    r=int(input("Enter number of rows: "))
+    c=int(input("Enter number of columns: "))
+    print("Enter the elements row-wise.")
+    for i in range(r):
+        a=[]
+        for j in range(c):
+            n=float(input("Enter: "))
+            a.append(n)
+        mat.append(a)
+    return mat,r,c
+    
+
+def disp(mat,r,c,flag=False):
+    """Display the matrix."""
+    if flag:
+        for i in range(r):
+            if i==0:
+                print('⌈',end=" ")
+            elif i == r-1:
+                print('⌊',end=" ")
+            else:
+                print('|',end=" ")
+            for j in range(c):
+                if mat[i][j].is_integer():
+                    print(int(mat[i][j]),end=' ')
+                else:
+                    print(mat[i][j],end=' ')
+                if j==c-1 and i==0:
+                    print('⌉',end=" ")
+                elif j==c-1 and i==r-1:
+                    print('⌋',end=" ")
+                elif j==c-1:
+                    print('|',end=" ")
+            print()
+        print()
+
+
+# # -------------MATRIX OPERATIONS---------------
+
+def order(r,c):
+    print("Order of matrix is: {0}x{1}".format(r,c))
+    
+
+def add(mat1,r1,c1,mat2,r2,c2):
+    """
+    A function to perform addition on 2 matrices
+    """
+    mat=[]
+    if r1==r2 and c1==c2:
+        for i in range(r1):
+            a=[]
+            for j in range(c1):
+                n=mat1[i][j]+mat2[i][j]
+                a.append(n)
+            mat.append(a)
+        return mat,True
+    else:
+        print('Sum is not possible as order of matrices is different.')
+        return 0,False
+
+def subtract(mat1,r1,c1,mat2,r2,c2):
+    """
+    A function to perform subtraction on 2 matrices
+    """
+    mat=[]
+    if r1==r2 and c1==c2:
+        for i in range(r1):
+            a=[]
+            for j in range(c1):
+                n=mat1[i][j]-mat2[i][j]
+                a.append(n)
+            mat.append(a)
+        return mat,True
+    else:
+        print('Difference is not possible as order of matrices is different.')
+        return 0,False
+
+# # the 2 input matrices
+# mat1,r1,c1=enter()
+# mat2,r2,c2=enter()
+
+# # performing addition on the 2 matrices and displaying the result
+# mat_add,flag=add(mat1,r1,c1,mat2,r2,c2)
+# disp(mat_add,r1,c1,flag)
+
+# # performing subtraction on the 2 matrices and displaying the result
+# mat_sub,flag=subtract(mat1,r1,c1,mat2,r2,c2)
+# disp(mat_sub,r1,c1,flag)
+
+# # the variable 'flag' used is in the function 'disp' to ensure 
+# # that the output from functions like add,subtract has the 
+# # matrix of the same order. 
+
+
+def addinv(mat,r,c):
+    """
+    A function to calculate the negative(additive inverse)
+    of a matrix
+    """
+    matrix=[]
+    for i in range(r):
+        a=[]
+        for j in range(c):
+            n=-1*mat[i][j]
+            a.append(n)
+        matrix.append(a)
+    return matrix
+
+# mat,r,c=enter()
+# m=addinv(mat,r,c)
+# disp(m,r,c,True)
+# print("The above is the additive inverse of the input matrix.")
+
+
+def prod1(mat,r,c,n):
+    """
+    A function to perform a scalar multiplication on a matrix
+    """
+    matrix=[]
+    for i in range(r):
+        a=[]
+        for j in range(c):
+            r=n*mat[i][j]
+            a.append(r)
+        matrix.append(a)
+    return matrix
+      
+# mat,r,c=enter()
+# n=float(input("Enter a number for scalar multiplication: "))  
+# m=prod1(mat,r,c,n)        
+# disp(m,r,c,True) 
+      
+
+def prod2(mat1,r1,c1,mat2,r2,c2):
+    """
+    A function to perform multiplication on 2 matrices
+    """
+    matrix=[]
+    if c1==r2:   # checking the condition for matrix multiplication
+        # # Order of new matrix = r1 x c2
+        for i in range(r1):
+            a=[]
+            for j in range(c2):
+                x=0
+                s=0
+# Column of 1st Matrix multiplied by Row of 2nd Matrix
+                for k in range(c1):  # c1 is equal to r2
+                    n=mat1[i][x]*mat2[x][j]  
+# this line decides which elements to multiply of the 2 matrices
+                    x+=1
+                    s+=n
+                a.append(s)
+            matrix.append(a)
+        return matrix,r1,c2,True
+    else:
+        print("Matrices are not conformable (or compatible for multiplication).")
+        return 0,0,0,False
+
+
+# mat1,r1,c1=enter()
+# mat2,r2,c2=enter()  
+# mat,r,c,flag=prod2(mat1,r1,c1,mat2,r2,c2)
+# disp(mat,r,c,flag)
+        
+    
+def adj(m,r,c):
+    """
+    This calculates the adjoint(transpose) of a matrix.
+    """
+    if r==3 and c==3:
+        mat=[]
+        for j in range(c):
+            a=[]
+            for i in range(r):
+                n=m[i][j]
+                a.append(n)
+            mat.append(a)
+            return mat,c,r
+    elif r==2 and c==2:
+        m[0][1],m[1][0]=m[1][0],m[0][1]
+        return m,r,c      
+        
+    
+# mat,r,c=enter()
+# m,r,c=adj(mat,r,c)
+# disp(m,r,c,True) 
+# print('The above is the transpose of the matrix')
+
+
+def cof(m,r,c):
+    """
+    Cofactor of a matrix.
+    """
+    if r==3 and c==3:
+        mat=[]
+        s=-1
+        for i in range(r):
+            a=[]
+            for j in range(c):
+                n=m[i][j]
+                s*=-1
+                n*=s
+                a.append(n)
+            mat.append(a)
+        return mat
+    elif r==2 and c==2:
+        m[0][1]*=-1
+        m[1][0]*=-1
+        return m
+    
+
+# mat,r,c=enter()
+# mat=cof(mat,r,c)
+# disp(mat,r,c,True)
+
+
+def minor(m,r,c):
+    """
+    Calculate the minor of a 3x3 matrix 
+    """
+    if r==3 and c==3:
+# # these are the steps we take to calculate the minor
+# # of all the elements individually.
+        mat=[]
+        a=[]
+        a.append(m[1][1]*m[2][2] - m[2][1]*m[1][2])
+        a.append(m[1][0]*m[2][2] - m[1][2]*m[2][0])
+        a.append(m[1][0]*m[2][1] - m[1][1]*m[2][0])
+        mat.append(a)
+        a=[]
+        a.append(m[0][1]*m[2][2] - m[0][2]*m[2][1])
+        a.append(m[0][0]*m[2][2] - m[0][2]*m[2][0])
+        a.append(m[0][0]*m[2][1] - m[0][1]*m[2][0])
+        mat.append(a)
+        a=[]
+        a.append(m[0][1]*m[1][2] - m[0][2]*m[1][1])
+        a.append(m[0][0]*m[1][2] - m[0][2]*m[1][0])
+        a.append(m[0][0]*m[1][1] - m[0][1]*m[1][0])
+        mat.append(a)
+        return mat
+    elif r==2 and c==2:
+        m[0][0],m[1][1]=m[1][1],m[0][0]
+        m[0][1],m[1][0]=m[1][0],m[0][1]
+        return m
+
+# mat,r,c=enter()
+# mat=minor(mat,r,c)
+# disp(mat,r,c,True)
+
+
+def delta(m,r,c):
+        """
+        Evaluates the matrix.
+        """
+        if r==3 and c==3:
+            a=m[0][0]*(m[1][1]*m[2][2] - m[2][1]*m[1][2])
+            b=m[0][1]*(m[1][0]*m[2][2] - m[1][2]*m[2][0])
+            c=m[0][2]*(m[1][0]*m[2][1] - m[1][1]*m[2][0])
+            value=a-b+c
+        elif r==2 and c==2:
+            value=m[0][0]*m[1][1] - m[0][1]*m[1][0]
+        return value
+    
+
+def inv(m,r,c):
+    """
+    Calculates the inverse of a matrix.
+    """
+    ans=delta(m,r,c)  # evaluates the matrix
+    print("The delta of matrix =",ans)
+    mat=minor(m,r,c)  # calculates the minor
+    print("The minor :")
+    disp(mat,r,c,True)  # displays the minor
+    mat=cof(mat,r,c)    # calculates the cofactor
+    print("The cofactor :")
+    disp(mat,r,c,True)  # displays the minor
+    mat,r,c=adj(mat,r,c)   # calculates the adjoint
+    print("The adjoint:")
+    disp(mat,r,c,True)    # displays the adjoint
+    print("The inverse:")
+    print('1/{0}'.format(ans),end=' ')
+    # inverse=prod1(mat,r,c,(1/ans)) 
+    # # the above line multiplies the delta of the matrix 
+    # # to its adjoint, which gives the inverse
+    # return inverse,r,c
+    return mat,r,c,True
+    # # the above line returns the adjoint, the intention
+    # # is to display the delta and the adjoint 
+    # # and not multiply them, though we can multiply
+    # # and display the final result(inverse) but it 
+    # # could be very ugly looking (too many floating numbers)
+
+# mat,r,c=enter()
+# mat,r,c,flag=inv(mat,r,c)
+# disp(mat,r,c,flag)
+
+
+def martin(m1,r1,c1,m2,r2,c2):
+    """
+    First calculate the adjoint and then multiply the matrices 
+    then multiply the delta.
+    """
+    mat1,r1,c1=inv(m1,r1,c1) # calculates the inverse
+    mat,r,c,flag=prod2(mat1,r1,c1,m2,r2,c2)
+    if r==3 and c==1:
+        x,y,z=mat[0][0],mat[1][0],mat[2][0]
+        x,y,z=F(x).limit_denominator(),F(y).limit_denominator(),F(z).limit_denominator()
+        print("So, x={0}\ny={1}\nz={2}".format(x,y,z))
+    elif r==2 and c==1:
+        x,y=mat[0][0],mat[1][0]
+        x,y=F(x).limit_denominator(),F(y).limit_denominator()
+        print("So, x={0}\ny={1}".format(x,y))
+    return 'Done'
+
+# # the F.limit_denominator() function helps to simplify the 
+# # fraction as floating point values can be imprecise and we 
+# # can end up with 'weird' fractions...
+
+# m1,r1,c1=enter()
+# m2,r2,c2=enter()
+# martin(m1,r1,c1,m2,r2,c2)
